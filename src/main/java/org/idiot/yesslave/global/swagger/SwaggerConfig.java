@@ -1,4 +1,4 @@
-package org.idiot.yesslave.configuration.swagger;
+package org.idiot.yesslave.global.swagger;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
