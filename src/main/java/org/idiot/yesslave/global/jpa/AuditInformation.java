@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EnableJpaAuditing
 @EntityListeners(AuditingEntityListener.class)
-public class BaseEntity {
+public class AuditInformation {
     @CreatedDate
     @Comment("등록일")
     @Column(name = "REGISTER_DATE", nullable = false, updatable = false)
