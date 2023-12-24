@@ -13,6 +13,8 @@ import java.security.SecureRandom;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class VerificationCode {
+    public static final int CAPACITY = 6;
+
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final SecureRandom random = new SecureRandom();
 
@@ -22,9 +24,9 @@ public class VerificationCode {
      * 확인코드를 생성합니다.
      */
     public static VerificationCode create() {
-        StringBuilder sb = new StringBuilder(6);
+        StringBuilder sb = new StringBuilder(CAPACITY);
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < CAPACITY; i++) {
             int randomIndex = random.nextInt(CHARACTERS.length());
             char randomChar = CHARACTERS.charAt(randomIndex);
             sb.append(randomChar);
