@@ -20,3 +20,4 @@ spring:
       add-mappings: false
   mvc:
     throw-exception-if-no-handler-found: true
+    
