@@ -44,6 +44,8 @@ dependencies {
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    implementation("org.zalando:problem-spring-web-starter:0.27.0")
 }
 
 tasks.withType<Test> {
