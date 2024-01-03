@@ -1,37 +1,34 @@
 package org.idiot.yesslave.worktimer.domain;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
-import java.security.SecureRandom;
 
 @Getter
 @Embeddable
-@AllArgsConstructor
+@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class VerificationCode {
-    public static final int CAPACITY = 6;
 
-    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    private static final SecureRandom random = new SecureRandom();
+    private static final int CAPACITY = 6;
 
     private String verificationCode;
+
+    private VerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
 
     /**
      * 확인코드를 생성합니다.
      */
-    public static VerificationCode create() {
-        StringBuilder sb = new StringBuilder(CAPACITY);
+    public static VerificationCode create(AuthenticateCodeGenerator strategy) {
+        return new VerificationCode(strategy.create(CAPACITY));
+    }
 
-        for (int i = 0; i < CAPACITY; i++) {
-            int randomIndex = random.nextInt(CHARACTERS.length());
-            char randomChar = CHARACTERS.charAt(randomIndex);
-            sb.append(randomChar);
-        }
-
-        return new VerificationCode(sb.toString());
+    public static VerificationCode manual(String verificationCode) {
+        return new VerificationCode(verificationCode);
     }
 }

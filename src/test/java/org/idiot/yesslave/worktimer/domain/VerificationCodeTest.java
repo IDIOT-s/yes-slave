@@ -11,9 +11,10 @@ class VerificationCodeTest {
     void success() {
         //given
         final int expectedLength = 6;
+        final AuthenticateCodeGenerator generator = new RandomCodeGenerator();
 
         //when
-        VerificationCode result = VerificationCode.create();
+        VerificationCode result = VerificationCode.create(generator);
 
         //then
         assertThat(result.getVerificationCode().length()).isEqualTo(expectedLength);

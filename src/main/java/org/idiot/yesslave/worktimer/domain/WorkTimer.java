@@ -7,17 +7,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 import org.idiot.yesslave.global.jpa.AuditInformation;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -54,5 +47,18 @@ public class WorkTimer extends AuditInformation {
                 , null
                 , code
         );
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WorkTimer workTimer = (WorkTimer) o;
+        return Objects.equals(id, workTimer.id) && Objects.equals(checkIn, workTimer.checkIn) && Objects.equals(checkOut, workTimer.checkOut) && Objects.equals(code, workTimer.code);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, checkIn, checkOut, code);
     }
 }
