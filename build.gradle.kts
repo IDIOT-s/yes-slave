@@ -26,6 +26,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
 
     //flyway
     implementation("org.flywaydb:flyway-core")
@@ -42,11 +45,11 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-
+    //problem
     implementation("org.zalando:problem-spring-web-starter:0.27.0")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
+
+    //test
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks.withType<Test> {
