@@ -14,13 +14,11 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.zalando.problem.Problem;
+import org.zalando.problem.Status;
 
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.zalando.problem.Status.BAD_REQUEST;
-import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 
 @Slf4j
 @ControllerAdvice
@@ -36,8 +34,8 @@ public class RootExceptionHandler {
         log.error("[ 500 ERROR ] : ", e);
 
         Problem problem = Problem.builder()
-                .withStatus(INTERNAL_SERVER_ERROR)
-                .withTitle(INTERNAL_SERVER_ERROR.getReasonPhrase())
+                .withStatus(Status.INTERNAL_SERVER_ERROR)
+                .withTitle(Status.INTERNAL_SERVER_ERROR.getReasonPhrase())
                 .withDetail(e.getMessage())
                 .build();
 
@@ -63,8 +61,8 @@ public class RootExceptionHandler {
         });
 
         Problem problem = Problem.builder()
-                .withStatus(BAD_REQUEST)
-                .withTitle(BAD_REQUEST.getReasonPhrase())
+                .withStatus(Status.BAD_REQUEST)
+                .withTitle(Status.BAD_REQUEST.getReasonPhrase())
                 .with("parameters", responses)
                 .build();
 
@@ -88,8 +86,8 @@ public class RootExceptionHandler {
         });
 
         return Problem.builder()
-                .withStatus(BAD_REQUEST)
-                .withTitle(BAD_REQUEST.getReasonPhrase())
+                .withStatus(Status.BAD_REQUEST)
+                .withTitle(Status.BAD_REQUEST.getReasonPhrase())
                 .with("parameters", responses)
                 .build();
     }
