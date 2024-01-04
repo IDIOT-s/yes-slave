@@ -17,7 +17,7 @@ public class WorkTimerService {
     private final WorkTimerRepository workTimerRepository;
 
     @Transactional
-    public VerificationCode registerTimer(LocalDateTime checkIn, AuthenticateCodeGenerator authenticateCodeStrategy) {
+    public Long registerTimer(LocalDateTime checkIn, AuthenticateCodeGenerator authenticateCodeStrategy) {
 
         VerificationCode code = VerificationCode.create(authenticateCodeStrategy);
         boolean isExistence = workTimerRepository.findByCheckInAndCode(checkIn.toLocalDate(), code).isPresent();
@@ -28,6 +28,6 @@ public class WorkTimerService {
         }
 
         return workTimerRepository.save(WorkTimer.registerOf(checkIn, code))
-                .getCode();
+                .getId();
     }
 }

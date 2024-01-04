@@ -2,7 +2,6 @@ package org.idiot.yesslave.worktimer.application;
 
 import org.idiot.yesslave.worktimer.domain.AuthenticateCodeGenerator;
 import org.idiot.yesslave.worktimer.domain.RandomCodeGenerator;
-import org.idiot.yesslave.worktimer.domain.TestVerificationCodeStrategy;
 import org.idiot.yesslave.worktimer.domain.VerificationCode;
 import org.idiot.yesslave.worktimer.domain.WorkTimer;
 import org.idiot.yesslave.worktimer.repository.WorkTimerRepository;
@@ -15,8 +14,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -41,7 +38,7 @@ class WorkTimerServiceTest {
 
             final VerificationCode code = VerificationCode.manual("123456");
 
-            final WorkTimer expectedWorkTime = WorkTimer.registerOf(checkIn, code);
+            final WorkTimer expectedWorkTime = new WorkTimer(1L, checkIn, null, code);
 
             given(workTimerRepository.findByCheckInAndCode(eq(checkIn.toLocalDate()), any(VerificationCode.class)))
                     .willReturn(Optional.empty());
@@ -50,7 +47,7 @@ class WorkTimerServiceTest {
                     .willReturn(expectedWorkTime);
 
             //when
-            VerificationCode result = workTimerService.registerTimer(checkIn, authenticateCodeStrategy);
+            Long result = workTimerService.registerTimer(checkIn, authenticateCodeStrategy);
 
             //then
             assertThat(result).isNotNull();
