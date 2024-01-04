@@ -17,7 +17,6 @@ import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
 
 import javax.validation.ConstraintViolationException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -54,11 +53,11 @@ public class RootExceptionHandler {
 
         BindingResult bindingResult = e.getBindingResult();
 
-        List<InvalidResponse> responses = new ArrayList<>();
-
-        bindingResult.getFieldErrors().forEach(fieldError -> {
-            responses.add(new InvalidResponse(fieldError.getField(), fieldError.getDefaultMessage(), fieldError.getRejectedValue()));
-        });
+        List<InvalidResponse> responses = bindingResult.getFieldErrors().stream()
+                .map(fieldError -> new InvalidResponse(fieldError.getField()
+                        , fieldError.getDefaultMessage()
+                        , fieldError.getRejectedValue())
+                ).toList();
 
         Problem problem = Problem.builder()
                 .withStatus(Status.BAD_REQUEST)
@@ -79,11 +78,11 @@ public class RootExceptionHandler {
     public Problem constraintViolationExceptionHandler(ConstraintViolationException e) {
         log.error("[ 400 ERROR ] : ", e);
 
-        List<InvalidResponse> responses = new ArrayList<>();
-
-        e.getConstraintViolations().forEach(fieldError -> {
-            responses.add(new InvalidResponse(fieldError.getPropertyPath().toString(), fieldError.getMessage(), fieldError.getInvalidValue()));
-        });
+        List<InvalidResponse> responses = e.getConstraintViolations().stream()
+                .map(fieldError -> new InvalidResponse(fieldError.getPropertyPath().toString()
+                        , fieldError.getMessage()
+                        , fieldError.getInvalidValue())
+                ).toList();
 
         return Problem.builder()
                 .withStatus(Status.BAD_REQUEST)
