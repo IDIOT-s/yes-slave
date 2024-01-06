@@ -26,6 +26,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
 
     //swagger
     implementation("org.springdoc:springdoc-openapi-ui:1.7.0")
@@ -38,7 +41,10 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
+    //problem
+    implementation("org.zalando:problem-spring-web-starter:0.27.0")
+
+    //test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
