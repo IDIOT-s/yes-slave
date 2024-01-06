@@ -27,10 +27,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
 
-    //flyway
-    implementation("org.flywaydb:flyway-core")
-    implementation("org.flywaydb:flyway-mysql")
-
     //swagger
     implementation("org.springdoc:springdoc-openapi-ui:1.7.0")
 
