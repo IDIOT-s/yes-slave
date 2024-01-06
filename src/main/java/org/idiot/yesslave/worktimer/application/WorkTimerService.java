@@ -20,11 +20,11 @@ public class WorkTimerService {
     public Long registerTimer(LocalDateTime checkIn, AuthenticateCodeGenerator authenticateCodeStrategy) {
 
         VerificationCode code = VerificationCode.create(authenticateCodeStrategy);
-        boolean isExistence = workTimerRepository.findByCheckInAndCode(checkIn.toLocalDate(), code).isPresent();
+        boolean isExistence = workTimerRepository.findByCheckInGreaterThanEqualAndCode(checkIn.toLocalDate().atStartOfDay(), code).isPresent();
 
         while (isExistence) {
             code = VerificationCode.create(authenticateCodeStrategy);
-            isExistence = workTimerRepository.findByCheckInAndCode(checkIn.toLocalDate(), code).isPresent();
+            isExistence = workTimerRepository.findByCheckInGreaterThanEqualAndCode(checkIn.toLocalDate().atStartOfDay(), code).isPresent();
         }
 
         return workTimerRepository.save(WorkTimer.registerOf(checkIn, code))
