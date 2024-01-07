@@ -40,7 +40,7 @@ class WorkTimerServiceTest {
 
             final WorkTimer expectedWorkTime = new WorkTimer(1L, checkIn, null, code);
 
-            given(workTimerRepository.findByCheckInGreaterThanEqualAndCode(eq(checkIn.toLocalDate().atStartOfDay()), any(VerificationCode.class)))
+            given(workTimerRepository.findByCheckInAndCode(eq(checkIn.toLocalDate()), any(VerificationCode.class)))
                     .willReturn(Optional.empty());
 
             given(workTimerRepository.save(any(WorkTimer.class)))
