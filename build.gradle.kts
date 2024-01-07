@@ -1,7 +1,10 @@
+import com.ewerk.gradle.plugins.tasks.QuerydslCompile
+
 plugins {
     java
     id("org.springframework.boot") version "2.7.8"
     id("io.spring.dependency-management") version "1.1.4"
+    id("com.ewerk.gradle.plugins.querydsl") version "1.0.10"
 }
 
 group = "com.example"
@@ -46,8 +49,46 @@ dependencies {
 
     //test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    //querydsl
+    implementation("com.querydsl:querydsl-jpa")
+    implementation ("com.querydsl:querydsl-core")
+    implementation ("com.querydsl:querydsl-collections")
+    annotationProcessor ("com.querydsl:querydsl-apt:5.0.0")
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+val querydslDir = layout.buildDirectory.dir("generated/querydsl").get().asFile
+
+tasks.withType<JavaCompile> {
+    options.generatedSourceOutputDirectory.set(file(querydslDir))
+}
+
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir.name
+}
+
+sourceSets.getByName("main") {
+    java.srcDir(querydslDir)
+}
+
+configurations {
+    named("querydsl") {
+        extendsFrom(configurations.compileClasspath.get())
+    }
+}
+
+tasks.withType<QuerydslCompile> {
+    options.annotationProcessorPath = configurations.querydsl.get()
+}
+
+// clean 이후에 querydsl 폴더를 지움
+tasks.named("clean") {
+    doLast {
+        file(querydslDir).deleteRecursively()
+    }
 }
