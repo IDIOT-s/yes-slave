@@ -52,9 +52,9 @@ dependencies {
 
     //querydsl
     implementation("com.querydsl:querydsl-jpa")
-    annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jpa")
-    annotationProcessor("jakarta.annotation:jakarta.annotation-api")
-    annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+    implementation ("com.querydsl:querydsl-core")
+    implementation ("com.querydsl:querydsl-collections")
+    annotationProcessor ("com.querydsl:querydsl-apt:5.0.0")
 }
 
 tasks.withType<Test> {
@@ -84,4 +84,11 @@ configurations {
 
 tasks.withType<QuerydslCompile> {
     options.annotationProcessorPath = configurations.querydsl.get()
+}
+
+// clean 이후에 querydsl 폴더를 지움
+tasks.named("clean") {
+    doLast {
+        file(querydslDir).deleteRecursively()
+    }
 }
