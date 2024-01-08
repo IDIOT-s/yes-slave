@@ -7,7 +7,15 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 import org.idiot.yesslave.global.jpa.AuditInformation;
 
-import javax.persistence.*;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -19,7 +27,7 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class WorkTimer extends AuditInformation {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "WORK_TIMER_ID", nullable = false)
     private Long id;
 
@@ -36,7 +44,7 @@ public class WorkTimer extends AuditInformation {
     @Embedded
     @Comment("확인코드")
     @AttributeOverrides({
-        @AttributeOverride(name = "verificationCode", column = @Column(name = "VERIFICATION_CODE", length = 6))
+            @AttributeOverride(name = "verificationCode", column = @Column(name = "VERIFICATION_CODE", length = 6))
     })
     private VerificationCode code;
 
