@@ -2,6 +2,7 @@ package org.idiot.yesslave.todo.application;
 
 import lombok.RequiredArgsConstructor;
 import org.idiot.yesslave.todo.domain.todo;
+import org.idiot.yesslave.todo.dto.saveDto;
 import org.idiot.yesslave.todo.repository.todoRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +17,9 @@ public class todoService {
     private final todoRepository todoRepository ;
     LocalDateTime time = LocalDateTime.now();
     // 저장
-    public void save(String text){
+    public void save(saveDto saveDto){
         todoRepository.save(todo.builder()
-                .todo(text)
+                .todo(saveDto.getTodo())
                 .registerDate(time)
                 .build());
     }
