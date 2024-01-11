@@ -34,6 +34,8 @@ public class todo {
         this.todo = todo;
         this.registerDate = registerDate;
     }
+
+
     public void changeCheck(boolean todoCheck){
         this.todoCheck = todoCheck;
     }

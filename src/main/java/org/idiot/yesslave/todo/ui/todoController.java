@@ -18,10 +18,11 @@ public class todoController {
 
     private final todoService todoService;
 
-    @PostMapping()
-    public ResponseEntity todoSave(@RequestBody saveDto saveDto){
+    @PostMapping
+    public  ResponseEntity todoSave(@RequestBody saveDto saveDto){
         todoService.save(saveDto);
         return ResponseEntity.created(URI.create("/todo")).build();
+
     }
 
 }

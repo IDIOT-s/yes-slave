@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 
 public class todoService {
     private final todoRepository todoRepository ;
-    LocalDateTime time = LocalDateTime.now();
+    private LocalDateTime time = LocalDateTime.now();
     // 저장
     public void save(saveDto saveDto){
         todoRepository.save(todo.builder()
@@ -23,6 +23,8 @@ public class todoService {
                 .registerDate(time)
                 .build());
     }
+
+
     // 수정
     public void update(){}
     // 체크박스 true,false
