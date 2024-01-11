@@ -21,5 +21,14 @@ public class Notice extends AuditInformation {
     @Column(name="USER_ID")
     private Long userId;
 */
-    public Notice() {}
+    protected Notice() {}
+    private Notice(String title, String content){
+        this.title=title;
+        this.content=content;
+    }
+
+
+    public static Notice createNotice(String title, String content){
+        return new Notice(title, content);
+    }
 }
