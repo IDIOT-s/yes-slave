@@ -28,4 +28,12 @@ public class todoController {
         return ResponseEntity.ok("Todo updated successfully");
     }
 
+    @PostMapping("/{id}")
+    public ResponseEntity changeCheck(@PathVariable Long id){
+        todoService.changeCheck(id);
+        return ResponseEntity.ok("Todo change successfully");
+    }
+
+
+
 }
