@@ -1,4 +1,4 @@
-package org.idiot.yesslave.notice.reposiotory;
+package org.idiot.yesslave.notice.repository;
 
 import org.idiot.yesslave.notice.domain.Notice;
 import org.springframework.data.jpa.repository.JpaRepository;
