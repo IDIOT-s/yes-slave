@@ -27,6 +27,10 @@ public class todo {
     @Column(name = "TODO_CHECK", nullable = false)
     private boolean todoCheck = false;
 
+    @Column(name = "delete", nullable = false)
+    private boolean delete = false;
+
+
     @Builder
     public todo(String todo, LocalDateTime registerDate){
         this.todo = todo;
@@ -36,6 +40,11 @@ public class todo {
 
     public void changeCheck(boolean todoCheck){
         this.todoCheck = todoCheck;
+    }
+
+    public void update(String todo, LocalDateTime updateDate){
+        this.todo = todo;
+        this.updateDate = updateDate;
     }
 
 
