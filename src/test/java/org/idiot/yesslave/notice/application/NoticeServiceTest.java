@@ -1,7 +1,9 @@
 package org.idiot.yesslave.notice.application;
 
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.SoftAssertions;
 import org.idiot.yesslave.notice.domain.Notice;
+import org.idiot.yesslave.notice.dto.NoticeSaveRequest;
 import org.idiot.yesslave.notice.repository.NoticeRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -18,30 +20,41 @@ class NoticeServiceTest {
     NoticeRepository noticeRepository;
 
     @Nested
-    @DisplayName(value="공지 저장")
+    @DisplayName("공지 저장할 때")
     class noticeRegister {
+        final String title = "test title";
+        final String content = "test content";
+
         @Test
-        @DisplayName("정상적으로 저장")
+        @DisplayName("정상적으로 저장합니다.")
         void saveNotice() {
             // given
-            Notice notice = Notice.createNotice("test title", "test content");
+            NoticeSaveRequest noticeSaveRequest = NoticeSaveRequest.builder()
+                    .title(title)
+                    .content(content)
+                    .build();
+
             // when
-            Long registerId = noticeService.registerNotice(notice);
+            Long registerId = noticeService.registerNotice(noticeSaveRequest);
             Notice findNotice = noticeRepository.findById(registerId).get();
 
             // then
-            Assertions.assertThat(findNotice).isNotNull();
-            Assertions.assertThat(findNotice.getTitle()).isEqualTo("test title");
-            Assertions.assertThat(findNotice.getContent()).isEqualTo("test content");
+            SoftAssertions softAssertions = new SoftAssertions();
+            softAssertions.assertThat(findNotice).isNotNull();
+            softAssertions.assertThat(findNotice.getTitle()).isEqualTo("test title");
+            softAssertions.assertThat(findNotice.getContent()).isEqualTo("test content");
+            softAssertions.assertAll();
         }
 
         @Test
-        @DisplayName("오류 발생(제목이 없을 경우) ")
+        @DisplayName("제목이 없어 오류가 발생합니다.")
         void saveNoticeWithNullTitle() {
             //given
-            Notice notice = Notice.createNotice(null, "test content");
-            //when
-            //then
+            NoticeSaveRequest noticeSaveRequest = NoticeSaveRequest.builder()
+                    .content(content)
+                    .build();
+            Notice notice = Notice.createNotice(noticeSaveRequest);
+            //expected
             Assertions.assertThatThrownBy(() -> noticeRepository.save(notice)).isInstanceOf(RuntimeException.class);
         }
     }

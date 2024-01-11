@@ -2,12 +2,8 @@ package org.idiot.yesslave.notice.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.idiot.yesslave.notice.application.NoticeService;
-import org.idiot.yesslave.notice.domain.Notice;
 import org.idiot.yesslave.notice.dto.NoticeSaveRequest;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import static org.mockito.BDDMockito.given;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,7 +24,9 @@ class NoticeControllerTest {
     NoticeService noticeService;
     @Autowired
     private MockMvc mockMvc;
-    final String baseUrl="/notice";
+    final String baseUrl = "/notice";
+    final String title = "test title";
+    final String content = "test content";
 
     @Autowired
     private WebApplicationContext ctx;
@@ -41,26 +39,47 @@ class NoticeControllerTest {
                 .build();
     }
 
-    @Test
-    @DisplayName(value="공지 생성 성공")
-    void createNotice() throws Exception {
-        mockMvc.perform(
-                MockMvcRequestBuilders.post(baseUrl)
-                        .content(asJsonString(NoticeSaveRequest.builder()
-                                .title("test title")
-                                .content("test content")
-                                .build()))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andReturn();
-        given(noticeService.registerNotice(Notice.createNotice("test title", "test content"))).willReturn(1L);
+    @Nested
+    @DisplayName("공지를 생성할 때")
+    class noticeCreate {
+        @Test
+        @DisplayName("성공합니다")
+        void createNotice() throws Exception {
+            String requestBody = asJsonString(NoticeSaveRequest.builder()
+                    .title(title)
+                    .content(content)
+                    .build());
+
+            mockMvc.perform(
+                            MockMvcRequestBuilders.post(baseUrl)
+                                    .content(requestBody)
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(MockMvcResultMatchers.status().isCreated())
+                    .andReturn();
+        }
+
+        @Test
+        @DisplayName("제목이 없어 실패합니다.")
+        void createNoticeFail() throws Exception {
+            String requestBody = asJsonString(NoticeSaveRequest.builder()
+                    .content(content)
+                    .build());
+
+            mockMvc.perform(
+                            MockMvcRequestBuilders.post(baseUrl)
+                                    .content(requestBody)
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+        }
     }
 
     static String asJsonString(Object object) {
         try {
             return new ObjectMapper().writeValueAsString(object);
-        } catch(Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
