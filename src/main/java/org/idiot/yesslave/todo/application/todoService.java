@@ -37,7 +37,11 @@ public class todoService {
     }
 
     // 체크박스 true,false
-    public void changeStatus(){}
+    public void changeCheck(Long id){
+        todo todo = existId(id);
+        deleteStatus(todo);
+        todo.changeCheck(!todo.isTodoCheck());
+    }
 
     private static void deleteStatus(todo todo) {
         if (todo.isDelete()) throw new BusinessExceptionHandler(errorCode.ID_DELETE);
