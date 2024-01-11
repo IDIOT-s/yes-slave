@@ -1,18 +1,18 @@
 package org.idiot.yesslave.notice.dto;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 
-@Data
+@Getter
 @Builder
 public class NoticeSaveRequest {
-    @NotBlank
+    @NotBlank(message = "제목을 입력해주세요.")
     private String title;
-    private String content;
+    private String content = "";
 
-    public NoticeSaveRequest() {
+    private NoticeSaveRequest() {
     }
 
     public NoticeSaveRequest(String title, String content) {
