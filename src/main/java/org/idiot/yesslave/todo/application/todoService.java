@@ -43,6 +43,12 @@ public class todoService {
         todo.changeCheck(!todo.isTodoCheck());
     }
 
+    public void delete(Long id){
+        todo todo = existId(id);
+        deleteStatus(todo);
+        todo.delete(true);
+    }
+
     private static void deleteStatus(todo todo) {
         if (todo.isDelete()) throw new BusinessExceptionHandler(errorCode.ID_DELETE);
     }

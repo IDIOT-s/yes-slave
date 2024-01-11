@@ -46,6 +46,8 @@ public class todo {
         this.todo = todo;
         this.updateDate = updateDate;
     }
-
+    public void delete (boolean delete){
+        this.delete = delete;
+    }
 
 }
