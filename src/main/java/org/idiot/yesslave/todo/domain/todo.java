@@ -6,11 +6,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @Table(name = "TODO")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class todo {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -27,6 +27,7 @@ public class todoService {
 
     // 수정
     public void update(){}
+    
     // 체크박스 true,false
     public void changeStatus(){}
 
