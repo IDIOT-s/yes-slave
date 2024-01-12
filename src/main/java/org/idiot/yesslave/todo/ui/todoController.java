@@ -17,25 +17,25 @@ public class todoController {
     private final todoService todoService;
 
     @PostMapping
-    public  ResponseEntity todoSave(@RequestBody saveDto saveDto){
+    public  ResponseEntity todoSave(@RequestBody saveDto saveDto) {
         todoService.save(saveDto);
-        return ResponseEntity.created(URI.create("/todo")).build();
+        return ResponseEntity.ok("Todo save successfully");
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity todoUpdate(@PathVariable Long id, @RequestBody updateDto updateDto){
+    public ResponseEntity todoUpdate(@PathVariable Long id, @RequestBody updateDto updateDto) {
         todoService.update(id, updateDto);
         return ResponseEntity.ok("Todo updated successfully");
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity changeCheck(@PathVariable Long id){
+    public ResponseEntity changeCheck(@PathVariable Long id) {
         todoService.changeCheck(id);
         return ResponseEntity.ok("Todo change successfully");
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable Long id){
+    public ResponseEntity delete(@PathVariable Long id) {
         todoService.delete(id);
         return ResponseEntity.ok("Todo delete successfully");
     }
