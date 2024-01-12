@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 public class saveDto {
     private String todo;
 
-    public saveDto(String todo){
+    public saveDto(String todo) {
         this.todo = todo;
     }
+
 }

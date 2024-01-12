@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class todo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     private Long id;
 
@@ -32,21 +32,21 @@ public class todo {
 
 
     @Builder
-    public todo(String todo, LocalDateTime registerDate){
+    public todo(String todo, LocalDateTime registerDate) {
         this.todo = todo;
         this.registerDate = registerDate;
     }
 
 
-    public void changeCheck(boolean todoCheck){
+    public void changeCheck(boolean todoCheck) {
         this.todoCheck = todoCheck;
     }
 
-    public void update(String todo, LocalDateTime updateDate){
+    public void update(String todo, LocalDateTime updateDate) {
         this.todo = todo;
         this.updateDate = updateDate;
     }
-    public void delete (boolean delete){
+    public void delete (boolean delete) {
         this.delete = delete;
     }
 
