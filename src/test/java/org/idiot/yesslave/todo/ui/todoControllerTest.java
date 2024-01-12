@@ -79,7 +79,7 @@ public class todoControllerTest {
         );
 
         //then
-        mvc.perform(patch(BASE_URL + "/1")
+        mvc.perform(patch(BASE_URL + "/2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body)
                 )
