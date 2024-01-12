@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 // cannot deserialize from Object value (no delegate- or property-based Creator)에러로 인해 기본 생성자 필요
 public class saveDto {
     private String todo;
-
+    @Builder
     public saveDto(String todo) {
         this.todo = todo;
     }
