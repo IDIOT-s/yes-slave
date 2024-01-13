@@ -1,11 +1,8 @@
 package org.idiot.yesslave.worktimer.domain;
 
-import org.springframework.stereotype.Component;
-
 import java.security.SecureRandom;
 import java.util.Random;
 
-@Component
 public class RandomCodeGenerator implements AuthenticateCodeGenerator {
     private final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private final Random random = new SecureRandom();
