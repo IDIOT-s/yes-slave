@@ -17,13 +17,13 @@ public class WorkTimerService {
     private final WorkTimerRepository workTimerRepository;
 
     @Transactional
-    public Long registerTimer(LocalDateTime checkIn, AuthenticateCodeGenerator authenticateCodeStrategy) {
+    public Long registerTimer(LocalDateTime checkIn, AuthenticateCodeGenerator authenticateCodeGenerator) {
 
-        VerificationCode code = VerificationCode.create(authenticateCodeStrategy);
+        VerificationCode code = VerificationCode.create(authenticateCodeGenerator);
         boolean isExistence = workTimerRepository.findByCheckInAndCode(checkIn.toLocalDate(), code).isPresent();
 
         while (isExistence) {
-            code = VerificationCode.create(authenticateCodeStrategy);
+            code = VerificationCode.create(authenticateCodeGenerator);
             isExistence = workTimerRepository.findByCheckInAndCode(checkIn.toLocalDate(), code).isPresent();
         }
 
