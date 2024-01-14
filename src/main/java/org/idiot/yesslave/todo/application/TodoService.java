@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+
 public class TodoService {
     private final TodoRepository todoRepository ;
 
@@ -24,7 +24,7 @@ public class TodoService {
                 .registerDate(time())
                 .build());
     }
-
+    @Transactional
     public void update(Long id, UpdateDto updateDto) {
         todo todo = existId(id);
         checkDeleteStatus(todo);
