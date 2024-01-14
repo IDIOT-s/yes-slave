@@ -64,12 +64,10 @@ public class TodoControllerTest {
         //given
         String text = "Test schedule";
         String change_text = "Change test schedule";
-        LocalDateTime time = LocalDateTime.now();
 
         //when
         todoRepository.save(todo.builder()
                         .todo(text)
-                        .registerDate(time)
                         .build());
 
         String body = mapper.writeValueAsString(
@@ -94,12 +92,10 @@ public class TodoControllerTest {
 
         //given
         String text = "Test schedule";
-        LocalDateTime time = LocalDateTime.now();
 
         //when
         todoRepository.save(todo.builder()
                 .todo(text)
-                .registerDate(time)
                 .build());
 
         //then
@@ -122,7 +118,6 @@ public class TodoControllerTest {
         //when
         todoRepository.save(todo.builder()
                 .todo(text)
-                .registerDate(time)
                 .build());
 
         //then
