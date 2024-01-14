@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +18,6 @@ import java.util.Optional;
 public class TodoService {
     private final TodoRepository todoRepository ;
 
-    // 저장
     public void save(SaveDto saveDto) {
         todoRepository.save(todo.builder()
                 .todo(saveDto.getTodo())
@@ -27,40 +25,36 @@ public class TodoService {
                 .build());
     }
 
-    // 수정
     public void update(Long id, UpdateDto updateDto) {
         todo todo = existId(id);
-        deleteStatus(todo);
+        checkDeleteStatus(todo);
         todo.update(updateDto.getTodo(), time());
     }
 
-    // 체크박스 true,false
     public void changeCheck(Long id) {
         todo todo = existId(id);
-        deleteStatus(todo);
+        checkDeleteStatus(todo);
         todo.changeCheck(!todo.isTodoCheck());
     }
 
-    // 논리적 삭제
     public void delete(Long id) {
         todo todo = existId(id);
-        deleteStatus(todo);
+        checkDeleteStatus(todo);
         todo.delete(true);
     }
 
-    // 삭제 상태 확인
-    private static void deleteStatus(todo todo) {
-        if (todo.isDelete()) throw new TodoIdHandler(ErrorCode.ID_DELETE);
+    private void checkDeleteStatus(todo todo) {
+        if (todo.isDelete()) {
+            throw new TodoIdHandler(ErrorCode.ID_DELETE);
+        }
     }
 
-    //id 존재 확인
     public todo existId(Long id) {
-        Optional<todo> op = todoRepository.findById(id);
-        todo todo = op.orElseThrow(() -> new TodoIdHandler(ErrorCode.ID_NOT_FOUND));
+        todo todo = todoRepository.findById(id)
+                .orElseThrow(() -> new TodoIdHandler(ErrorCode.ID_NOT_FOUND));
         return todo;
     }
 
-    //시간 갱신
     private LocalDateTime time() {
         LocalDateTime time = LocalDateTime.now();
         return time;
