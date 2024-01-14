@@ -1,40 +1,40 @@
 package org.idiot.yesslave.todo.domain;
 
 import lombok.*;
+import org.hibernate.annotations.Comment;
+import org.idiot.yesslave.global.jpa.AuditInformation;
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
+
 
 @Entity
 @Getter
 @Table(name = "TODO")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class todo {
+public class todo extends AuditInformation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
+    @Comment("id는 todo 테이블의 pk 값 입니다")
     private Long id;
 
     @Column(name = "TODO", nullable = false)
+    @Comment("todo는 오늘의 다짐을 적는 부분입니다.")
     private String todo;
 
-    @Column(name = "REGISTER_DATE", nullable = false)
-    private LocalDateTime registerDate;
-
-    @Column(name = "UPDATE_DATE", nullable = true)
-    private LocalDateTime updateDate;
-
     @Column(name = "TODO_CHECK", nullable = false)
+    @Comment("todoCheck는 실행 여부를 체크하는 부분입니다.")
     private boolean todoCheck = false;
 
-    @Column(name = "delete", nullable = false)
+    @Column(name = "DELETE", nullable = false)
+    @Comment("delete는 삭제 여부를 체크하는 부분입니다.")
     private boolean delete = false;
 
 
     @Builder
-    public todo(String todo, LocalDateTime registerDate) {
+    public todo(String todo) {
         this.todo = todo;
-        this.registerDate = registerDate;
     }
 
 
@@ -42,9 +42,8 @@ public class todo {
         this.todoCheck = todoCheck;
     }
 
-    public void update(String todo, LocalDateTime updateDate) {
+    public void update(String todo) {
         this.todo = todo;
-        this.updateDate = updateDate;
     }
     public void delete (boolean delete) {
         this.delete = delete;

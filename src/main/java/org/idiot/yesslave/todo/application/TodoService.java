@@ -10,33 +10,34 @@ import org.idiot.yesslave.todo.repository.TodoRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-
 public class TodoService {
     private final TodoRepository todoRepository ;
 
+    @Transactional
     public void save(SaveDto saveDto) {
         todoRepository.save(todo.builder()
                 .todo(saveDto.getTodo())
-                .registerDate(time())
                 .build());
     }
+
     @Transactional
     public void update(Long id, UpdateDto updateDto) {
         todo todo = existId(id);
         checkDeleteStatus(todo);
-        todo.update(updateDto.getTodo(), time());
+        todo.update(updateDto.getTodo());
     }
 
+    @Transactional
     public void changeCheck(Long id) {
         todo todo = existId(id);
         checkDeleteStatus(todo);
         todo.changeCheck(!todo.isTodoCheck());
     }
 
+    @Transactional
     public void delete(Long id) {
         todo todo = existId(id);
         checkDeleteStatus(todo);
@@ -54,12 +55,5 @@ public class TodoService {
                 .orElseThrow(() -> new TodoIdHandler(ErrorCode.ID_NOT_FOUND));
         return todo;
     }
-
-    private LocalDateTime time() {
-        LocalDateTime time = LocalDateTime.now();
-        return time;
-    }
-
-
 
 }
