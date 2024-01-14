@@ -3,6 +3,7 @@ package org.idiot.yesslave.global.exception;
 import lombok.Getter;
 
 public class TodoIdHandler extends RuntimeException {
+
     @Getter
     private final ErrorCode errorCode;
 
