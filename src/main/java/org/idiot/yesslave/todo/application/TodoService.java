@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.idiot.yesslave.global.exception.BusinessExceptionHandler;
 import org.idiot.yesslave.global.exception.errorCode;
 import org.idiot.yesslave.todo.domain.todo;
-import org.idiot.yesslave.todo.dto.saveDto;
-import org.idiot.yesslave.todo.dto.updateDto;
-import org.idiot.yesslave.todo.repository.todoRepository;
+import org.idiot.yesslave.todo.dto.SaveDto;
+import org.idiot.yesslave.todo.dto.UpdateDto;
+import org.idiot.yesslave.todo.repository.TodoRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,11 +16,11 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class todoService {
-    private final todoRepository todoRepository ;
+public class TodoService {
+    private final TodoRepository todoRepository ;
 
     // 저장
-    public void save(saveDto saveDto) {
+    public void save(SaveDto saveDto) {
         todoRepository.save(todo.builder()
                 .todo(saveDto.getTodo())
                 .registerDate(time())
@@ -28,7 +28,7 @@ public class todoService {
     }
 
     // 수정
-    public void update(Long id, updateDto updateDto) {
+    public void update(Long id, UpdateDto updateDto) {
         todo todo = existId(id);
         deleteStatus(todo);
         todo.update(updateDto.getTodo(), time());

@@ -1,29 +1,27 @@
 package org.idiot.yesslave.todo.ui;
 
 import lombok.RequiredArgsConstructor;
-import org.idiot.yesslave.todo.application.todoService;
-import org.idiot.yesslave.todo.dto.saveDto;
-import org.idiot.yesslave.todo.dto.updateDto;
+import org.idiot.yesslave.todo.application.TodoService;
+import org.idiot.yesslave.todo.dto.SaveDto;
+import org.idiot.yesslave.todo.dto.UpdateDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
 
 @RestController
 @RequestMapping("/todo")
 @RequiredArgsConstructor
-public class todoController {
+public class TodoController {
 
-    private final todoService todoService;
+    private final TodoService todoService;
 
     @PostMapping
-    public  ResponseEntity todoSave(@RequestBody saveDto saveDto) {
+    public  ResponseEntity todoSave(@RequestBody SaveDto saveDto) {
         todoService.save(saveDto);
         return ResponseEntity.ok("Todo save successfully");
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity todoUpdate(@PathVariable Long id, @RequestBody updateDto updateDto) {
+    public ResponseEntity todoUpdate(@PathVariable Long id, @RequestBody UpdateDto updateDto) {
         todoService.update(id, updateDto);
         return ResponseEntity.ok("Todo updated successfully");
     }

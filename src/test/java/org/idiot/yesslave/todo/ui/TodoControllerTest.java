@@ -8,8 +8,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.assertj.core.api.Assertions;
 import org.idiot.yesslave.todo.domain.todo;
-import org.idiot.yesslave.todo.dto.saveDto;
-import org.idiot.yesslave.todo.repository.todoRepository;
+import org.idiot.yesslave.todo.dto.SaveDto;
+import org.idiot.yesslave.todo.repository.TodoRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class todoControllerTest {
+public class TodoControllerTest {
     @Autowired
     ObjectMapper mapper;
 
@@ -31,7 +31,7 @@ public class todoControllerTest {
     MockMvc mvc;
 
     @Autowired
-    private todoRepository todoRepository;
+    private TodoRepository todoRepository;
 
     private static final String BASE_URL = "/todo";
 
@@ -43,7 +43,7 @@ public class todoControllerTest {
 
         //when
         String body = mapper.writeValueAsString(
-            saveDto.builder()
+            SaveDto.builder()
                     .todo(text)
                     .build()
         );
@@ -73,7 +73,7 @@ public class todoControllerTest {
                         .build());
 
         String body = mapper.writeValueAsString(
-                saveDto.builder()
+                SaveDto.builder()
                         .todo(change_text)
                         .build()
         );
@@ -103,7 +103,7 @@ public class todoControllerTest {
                 .build());
 
         //then
-        mvc.perform(post(BASE_URL + "/1")
+        mvc.perform(post(BASE_URL + "/2")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
