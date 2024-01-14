@@ -2,11 +2,11 @@ package org.idiot.yesslave.global.exception;
 
 import lombok.Getter;
 
-public class BusinessExceptionHandler extends RuntimeException{
+public class TodoIdHandler extends RuntimeException {
     @Getter
-    private final errorCode errorCode;
+    private final ErrorCode errorCode;
 
-    public BusinessExceptionHandler(errorCode errorCode) {
+    public TodoIdHandler(ErrorCode errorCode) {
         super(errorCode.getMessage());
         this.errorCode = errorCode;
     }

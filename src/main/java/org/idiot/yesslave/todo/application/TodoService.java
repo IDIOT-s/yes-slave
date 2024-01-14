@@ -1,8 +1,8 @@
 package org.idiot.yesslave.todo.application;
 
 import lombok.RequiredArgsConstructor;
-import org.idiot.yesslave.global.exception.BusinessExceptionHandler;
-import org.idiot.yesslave.global.exception.errorCode;
+import org.idiot.yesslave.global.exception.TodoIdHandler;
+import org.idiot.yesslave.global.exception.ErrorCode;
 import org.idiot.yesslave.todo.domain.todo;
 import org.idiot.yesslave.todo.dto.SaveDto;
 import org.idiot.yesslave.todo.dto.UpdateDto;
@@ -50,13 +50,13 @@ public class TodoService {
 
     // 삭제 상태 확인
     private static void deleteStatus(todo todo) {
-        if (todo.isDelete()) throw new BusinessExceptionHandler(errorCode.ID_DELETE);
+        if (todo.isDelete()) throw new TodoIdHandler(ErrorCode.ID_DELETE);
     }
 
     //id 존재 확인
     public todo existId(Long id) {
         Optional<todo> op = todoRepository.findById(id);
-        todo todo = op.orElseThrow(() -> new BusinessExceptionHandler(errorCode.ID_NOT_FOUND));
+        todo todo = op.orElseThrow(() -> new TodoIdHandler(ErrorCode.ID_NOT_FOUND));
         return todo;
     }
 
