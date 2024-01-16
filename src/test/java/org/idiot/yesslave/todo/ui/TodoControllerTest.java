@@ -113,7 +113,6 @@ public class TodoControllerTest {
 
         //given
         String text = "Test schedule";
-        LocalDateTime time = LocalDateTime.now();
 
         //when
         todoRepository.save(todo.builder()
