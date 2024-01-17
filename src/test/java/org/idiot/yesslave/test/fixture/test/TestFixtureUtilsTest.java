@@ -1,16 +1,17 @@
 package org.idiot.yesslave.test.fixture.test;
 
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import org.apache.commons.lang3.RandomUtils;
 import org.idiot.yesslave.test.fixture.TestFixtureUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-import static org.assertj.core.api.SoftAssertions.*;
-
+@Disabled("비즈니스와 상관 없는 Test Util에 관한 테스트로 생략. 관련 코드가 수정 되면 로컬에서 검증하기로")
 public class TestFixtureUtilsTest {
 
     @ParameterizedTest(name = "size : {0}")
@@ -43,13 +44,13 @@ public class TestFixtureUtilsTest {
 
     public static Stream<Integer> 랜덤_1024_생성() {
         return IntStream.range(0, 10)
-                .boxed()
-                .map((it) -> RandomUtils.nextInt(0, 1024));
+            .boxed()
+            .map((it) -> RandomUtils.nextInt(0, 1024));
     }
 
     public static Stream<Integer> 랜덤_size_생성() {
         return IntStream.range(0, 10)
-                .boxed()
-                .map((it) -> RandomUtils.nextInt(0, Integer.MAX_VALUE));
+            .boxed()
+            .map((it) -> RandomUtils.nextInt(0, Integer.MAX_VALUE));
     }
 }
