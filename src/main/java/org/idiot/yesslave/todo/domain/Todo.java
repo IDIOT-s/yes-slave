@@ -16,19 +16,18 @@ public class Todo extends AuditInformation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
-    @Comment("id는 todo 테이블의 pk 값 입니다")
     private Long id;
 
     @Column(name = "TODO", nullable = false)
-    @Comment("todo는 오늘의 다짐을 적는 부분입니다.")
+    @Comment("다짐")
     private String todo;
 
     @Column(name = "TODO_CHECK", nullable = false)
-    @Comment("todoCheck는 실행 여부를 체크하는 부분입니다.")
+    @Comment("실행여부")
     private boolean todoCheck = false;
 
     @Column(name = "DELETE", nullable = false)
-    @Comment("delete는 삭제 여부를 체크하는 부분입니다.")
+    @Comment("삭제여부")
     private boolean delete = false;
 
 
