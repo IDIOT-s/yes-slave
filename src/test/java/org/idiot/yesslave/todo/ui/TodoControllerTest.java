@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.assertj.core.api.Assertions;
-import org.idiot.yesslave.todo.domain.todo;
+import org.idiot.yesslave.todo.domain.Todo;
 import org.idiot.yesslave.todo.dto.SaveDto;
 import org.idiot.yesslave.todo.repository.TodoRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -17,8 +17,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.time.LocalDateTime;
 
 
 @SpringBootTest
@@ -66,7 +64,7 @@ public class TodoControllerTest {
         String change_text = "Change test schedule";
 
         //when
-        todoRepository.save(todo.builder()
+        todoRepository.save(Todo.builder()
                         .todo(text)
                         .build());
 
@@ -94,7 +92,7 @@ public class TodoControllerTest {
         String text = "Test schedule";
 
         //when
-        todoRepository.save(todo.builder()
+        todoRepository.save(Todo.builder()
                 .todo(text)
                 .build());
 
@@ -115,7 +113,7 @@ public class TodoControllerTest {
         String text = "Test schedule";
 
         //when
-        todoRepository.save(todo.builder()
+        todoRepository.save(Todo.builder()
                 .todo(text)
                 .build());
 

@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @Table(name = "TODO")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class todo extends AuditInformation {
+public class Todo extends AuditInformation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,7 @@ public class todo extends AuditInformation {
 
 
     @Builder
-    public todo(String todo) {
+    public Todo(String todo) {
         this.todo = todo;
     }
 
