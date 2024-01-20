@@ -14,7 +14,7 @@ import javax.transaction.Transactional;
 @Service
 @RequiredArgsConstructor
 public class TodoService {
-    private final TodoRepository todoRepository ;
+    private final TodoRepository todoRepository;
 
     @Transactional
     public void save(SaveDto saveDto) {
