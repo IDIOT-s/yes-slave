@@ -49,8 +49,8 @@ public class Todo extends AuditInformation {
     public void update(String todo) {
         this.todo = todo;
     }
-    public void delete (boolean delete) {
-        this.delete = delete;
+    public void delete () {
+        delete = true;
     }
 
 }

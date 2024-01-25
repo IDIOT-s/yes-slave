@@ -41,7 +41,7 @@ public class TodoService {
     public void delete(Long id) {
         Todo todo = existId(id);
         checkDeleteStatus(todo);
-        todo.delete(true);
+        todo.delete();
     }
 
     private void checkDeleteStatus(Todo todo) {
