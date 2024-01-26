@@ -29,7 +29,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 
-@WebMvcTest
+@WebMvcTest(WorkTimerController.class)
 @ExtendWith(SpringExtension.class)
 class WorkTimerControllerTest {
 
