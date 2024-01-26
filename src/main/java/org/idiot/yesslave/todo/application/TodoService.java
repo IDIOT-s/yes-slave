@@ -31,10 +31,11 @@ public class TodoService {
     }
 
     @Transactional
-    public void changeCheck(Long id) {
+    public boolean changeCheck(Long id) {
         Todo todo = existId(id);
         checkDeleteStatus(todo);
         todo.changeCheck(!todo.isTodoCheck());
+        return todo.isTodoCheck();
     }
 
     @Transactional

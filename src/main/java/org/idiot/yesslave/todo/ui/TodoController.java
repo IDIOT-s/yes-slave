@@ -27,9 +27,8 @@ public class TodoController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity changeCheck(@PathVariable Long id) {
-        todoService.changeCheck(id);
-        return ResponseEntity.ok("Todo change successfully");
+    public boolean changeCheck(@PathVariable Long id) {
+        return todoService.changeCheck(id);
     }
 
     @DeleteMapping("/{id}")
