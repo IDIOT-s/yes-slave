@@ -7,13 +7,13 @@ import org.idiot.yesslave.notice.domain.Notice;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class NoticeFindResponse {
+public class NoticeUpdateResponse {
     private Long id;
     private String title;
     private String content;
 
-    public static NoticeFindResponse of(Notice notice) {
-        return NoticeFindResponse.builder()
+    public static NoticeUpdateResponse of(Notice notice) {
+        return NoticeUpdateResponse.builder()
                 .id(notice.getId())
                 .title(notice.getTitle())
                 .content(notice.getContent())

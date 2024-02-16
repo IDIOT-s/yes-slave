@@ -90,4 +90,22 @@ public class RootExceptionHandler {
                 .with("parameters", responses)
                 .build();
     }
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ApiResponse(responseCode = "404", description = "Not Found", content = {
+            @Content(schema = @Schema(implementation = Problem.class))
+    })
+    public ResponseEntity<Problem> notFoundExceptionHandler(Exception e) {
+        log.error("[ 404 ERROR ] : ", e);
+
+        Problem problem = Problem.builder()
+                .withStatus(Status.NOT_FOUND)
+                .withTitle(Status.NOT_FOUND.getReasonPhrase())
+                .withDetail(e.getMessage())
+                .build();
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(problem);
+    }
 }

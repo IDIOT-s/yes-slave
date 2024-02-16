@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.hibernate.annotations.Comment;
 import org.idiot.yesslave.global.jpa.AuditInformation;
 import org.idiot.yesslave.notice.dto.NoticeSaveRequest;
+import org.idiot.yesslave.notice.dto.NoticeUpdateRequest;
 
 import javax.persistence.*;
 
@@ -31,5 +32,10 @@ public class Notice extends AuditInformation {
 
     public static Notice createNotice(NoticeSaveRequest noticeSaveRequest) {
         return new Notice(noticeSaveRequest.getTitle(), noticeSaveRequest.getContent());
+    }
+
+    public void update(NoticeUpdateRequest request) {
+        this.title = request.getTitle();
+        this.content = request.getContent();
     }
 }

@@ -5,6 +5,8 @@ import org.idiot.yesslave.global.exception.NotFoundException;
 import org.idiot.yesslave.notice.domain.Notice;
 import org.idiot.yesslave.notice.dto.NoticeFindResponse;
 import org.idiot.yesslave.notice.dto.NoticeSaveRequest;
+import org.idiot.yesslave.notice.dto.NoticeUpdateRequest;
+import org.idiot.yesslave.notice.dto.NoticeUpdateResponse;
 import org.idiot.yesslave.notice.repository.NoticeRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,4 +37,13 @@ public class NoticeService {
                 .orElseThrow(NotFoundException::new);
         return NoticeFindResponse.of(findNotice);
     }
+
+    @Transactional
+    public NoticeUpdateResponse updateNotice(Long id, NoticeUpdateRequest request) {
+        Notice findNotice = noticeRepository.findById(id)
+                .orElseThrow(NotFoundException::new);
+        findNotice.update(request);
+        return NoticeUpdateResponse.of(findNotice);
+    }
+
 }
