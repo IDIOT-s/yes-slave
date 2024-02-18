@@ -2,10 +2,7 @@ package org.idiot.yesslave.notice.ui;
 
 import lombok.RequiredArgsConstructor;
 import org.idiot.yesslave.notice.application.NoticeService;
-import org.idiot.yesslave.notice.dto.NoticeFindResponse;
-import org.idiot.yesslave.notice.dto.NoticeSaveRequest;
-import org.idiot.yesslave.notice.dto.NoticeUpdateRequest;
-import org.idiot.yesslave.notice.dto.NoticeUpdateResponse;
+import org.idiot.yesslave.notice.dto.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -54,5 +51,11 @@ public class NoticeController {
                         .build()
                         .toUri())
                 .body(updateNotice);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<NoticeDeleteResponse> deleteNotice(@PathVariable Long id) {
+        NoticeDeleteResponse deleteNotice = noticeService.deleteNotice(id);
+        return ResponseEntity.ok(deleteNotice);
     }
 }

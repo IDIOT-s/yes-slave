@@ -3,10 +3,7 @@ package org.idiot.yesslave.notice.application;
 import lombok.RequiredArgsConstructor;
 import org.idiot.yesslave.global.exception.NotFoundException;
 import org.idiot.yesslave.notice.domain.Notice;
-import org.idiot.yesslave.notice.dto.NoticeFindResponse;
-import org.idiot.yesslave.notice.dto.NoticeSaveRequest;
-import org.idiot.yesslave.notice.dto.NoticeUpdateRequest;
-import org.idiot.yesslave.notice.dto.NoticeUpdateResponse;
+import org.idiot.yesslave.notice.dto.*;
 import org.idiot.yesslave.notice.repository.NoticeRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,4 +43,12 @@ public class NoticeService {
         return NoticeUpdateResponse.of(findNotice);
     }
 
+    @Transactional
+    public NoticeDeleteResponse deleteNotice(Long id) {
+        Notice findNotice = noticeRepository.findById(id)
+                .orElseThrow(NotFoundException::new);
+        NoticeDeleteResponse response = NoticeDeleteResponse.of(findNotice);
+        noticeRepository.delete(findNotice);
+        return response;
+    }
 }
