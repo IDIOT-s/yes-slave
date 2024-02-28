@@ -4,41 +4,42 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.idiot.yesslave.global.exception.NotFoundException;
 import org.idiot.yesslave.notice.application.NoticeService;
 import org.idiot.yesslave.notice.dto.NoticeSaveRequest;
-import org.idiot.yesslave.notice.repository.NoticeRepository;
+import org.idiot.yesslave.notice.dto.NoticeUpdateRequest;
+import org.idiot.yesslave.notice.dto.NoticeUpdateResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
+@WebMvcTest(NoticeController.class)
+@ExtendWith(SpringExtension.class)
 class NoticeControllerTest {
-    //    @Autowired
     @MockBean
     NoticeService noticeService;
-    @Autowired
-    NoticeRepository noticeRepository;
     @Autowired
     private MockMvc mockMvc;
     final String baseUrl = "/notice";
     final String title = "test title";
     final String content = "test content";
     final long expectId = 1L;
+    final long failId = 2L;
     final String newTitle = "new title";
     final String newContent = "new content";
 
@@ -49,7 +50,7 @@ class NoticeControllerTest {
     void init() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx)
                 .addFilters(new CharacterEncodingFilter("UTF-8", true))
-                .alwaysDo(MockMvcResultHandlers.print())
+                .alwaysDo(print())
                 .build();
     }
 
@@ -117,12 +118,79 @@ class NoticeControllerTest {
         @Test
         @DisplayName("단일 조회에 실패합니다")
         void findNoticeFail() throws Exception {
-            long failId = 2L;
             Mockito.doThrow(new NotFoundException()).when(noticeService).findNotice(failId);
             mockMvc.perform(
                             MockMvcRequestBuilders.get(baseUrl + String.format("/%d", failId)))
                     .andExpect(MockMvcResultMatchers.status().is4xxClientError());
         }
+    }
+
+    @Nested
+    @DisplayName("공지를 수정할 때")
+    class NoticeUpdate {
+        @Test
+        @DisplayName("수정에 성공합니다.")
+        void updateNoticeSuccess() throws Exception {
+            NoticeSaveRequest saveRequest = NoticeSaveRequest.builder()
+                    .title(title)
+                    .content(content)
+                    .build();
+            BDDMockito.given(noticeService.registerNotice(saveRequest)).willReturn(expectId);
+
+            NoticeUpdateRequest request = NoticeUpdateRequest.builder()
+                    .title(newTitle)
+                    .content(newContent)
+                    .build();
+            String requestString = asJsonString(request);
+
+            BDDMockito.given(noticeService.updateNotice(expectId, request)).willReturn(
+                    NoticeUpdateResponse.builder()
+                            .id(expectId)
+                            .title(newTitle)
+                            .content(newContent)
+                            .build()
+            );
+
+            mockMvc.perform(MockMvcRequestBuilders.put(baseUrl + "/{id}", expectId)
+                            .content(requestString)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(MockMvcResultMatchers.status().isOk());
+        }
+
+        @Test
+        @DisplayName("해당 데이터가 없어 수정에 실패합니다")
+        void updateNoticeFailById() throws Exception {
+            NoticeUpdateRequest request = NoticeUpdateRequest.builder()
+                    .title(newTitle)
+                    .content(newContent)
+                    .build();
+            String requestString = asJsonString(request);
+
+            BDDMockito.given(noticeService.updateNotice(failId, request))
+                    .willThrow(NotFoundException.class);
+
+            mockMvc.perform(MockMvcRequestBuilders.put(baseUrl + "/{id}", failId)
+                            .content(requestString)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+        }
+
+        @Test
+        @DisplayName("제목이 없어 수정에 실패합니다")
+        void updateNoticeFailByTitle() throws Exception {
+            NoticeUpdateRequest request = NoticeUpdateRequest.builder()
+                    .content(newContent)
+                    .build();
+            String requestString = asJsonString(request);
+            mockMvc.perform(MockMvcRequestBuilders.put(baseUrl + String.format("/%d", failId))
+                            .content(requestString)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+        }
+
     }
 
     static String asJsonString(Object object) {

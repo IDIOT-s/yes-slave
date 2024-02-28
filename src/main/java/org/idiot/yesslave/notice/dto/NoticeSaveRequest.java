@@ -1,16 +1,25 @@
 package org.idiot.yesslave.notice.dto;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor
 public class NoticeSaveRequest {
     @NotBlank(message = "제목을 입력해주세요.")
     private String title;
-    @Builder.Default
-    private String content = "";
+    private String content;
+
+    @Builder
+    public NoticeSaveRequest(String title, String content) {
+        if (content == null) {
+            content = "";
+        }
+        this.title = title;
+        this.content = content;
+    }
 }

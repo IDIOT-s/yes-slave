@@ -94,7 +94,7 @@ public class RootExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ApiResponse(responseCode = "404", description = "Not Found", content = {
-            @Content(schema = @Schema(implementation = Problem.class))
+            @Content(schema = @Schema(implementation = InvalidResponse.class))
     })
     public ResponseEntity<Problem> notFoundExceptionHandler(Exception e) {
         log.error("[ 404 ERROR ] : ", e);

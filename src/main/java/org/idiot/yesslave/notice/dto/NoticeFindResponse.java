@@ -1,16 +1,24 @@
 package org.idiot.yesslave.notice.dto;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.idiot.yesslave.notice.domain.Notice;
 
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor
 public class NoticeFindResponse {
     private Long id;
     private String title;
     private String content;
+
+    @Builder
+    public NoticeFindResponse(Long id, String title, String content) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+    }
 
     public static NoticeFindResponse of(Notice notice) {
         return NoticeFindResponse.builder()
