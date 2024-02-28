@@ -1,15 +1,20 @@
 package org.idiot.yesslave.notice.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.idiot.yesslave.global.exception.NotFoundException;
 import org.idiot.yesslave.notice.application.NoticeService;
 import org.idiot.yesslave.notice.dto.NoticeSaveRequest;
+import org.idiot.yesslave.notice.repository.NoticeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -23,14 +28,17 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 @SpringBootTest
 @AutoConfigureMockMvc
 class NoticeControllerTest {
-    @Autowired
+    //    @Autowired
+    @MockBean
     NoticeService noticeService;
+    @Autowired
+    NoticeRepository noticeRepository;
     @Autowired
     private MockMvc mockMvc;
     final String baseUrl = "/notice";
     final String title = "test title";
     final String content = "test content";
-    final long id = 1L;
+    final long expectId = 1L;
     final String newTitle = "new title";
     final String newContent = "new content";
 
@@ -88,16 +96,8 @@ class NoticeControllerTest {
         @Test
         @DisplayName("전체 조회에 성공합니다")
         void findAllNotice() throws Exception {
-            NoticeSaveRequest request = NoticeSaveRequest.builder()
-                    .title(title)
-                    .content(content)
-                    .build();
-            noticeService.registerNotice(request);
-
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(baseUrl))
-                    .andExpect(MockMvcResultMatchers.status().isOk())
-                    .andReturn();
-            System.out.println("@@@@" + mvcResult.getResponse().getContentAsString());
+            mockMvc.perform(MockMvcRequestBuilders.get(baseUrl))
+                    .andExpect(MockMvcResultMatchers.status().isOk());
         }
 
         @Test
@@ -107,9 +107,8 @@ class NoticeControllerTest {
                     .title(title)
                     .content(content)
                     .build();
-            noticeService.registerNotice(request);
-
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(baseUrl + String.format("/%d", id)))
+            BDDMockito.given(noticeService.registerNotice(request)).willReturn(expectId);
+            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(baseUrl + String.format("/%d", expectId)))
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andReturn();
             System.out.println(mvcResult.getResponse().getContentAsString());
@@ -118,8 +117,10 @@ class NoticeControllerTest {
         @Test
         @DisplayName("단일 조회에 실패합니다")
         void findNoticeFail() throws Exception {
+            long failId = 2L;
+            Mockito.doThrow(new NotFoundException()).when(noticeService).findNotice(failId);
             mockMvc.perform(
-                            MockMvcRequestBuilders.get(baseUrl + String.format("/%d", id)))
+                            MockMvcRequestBuilders.get(baseUrl + String.format("/%d", failId)))
                     .andExpect(MockMvcResultMatchers.status().is4xxClientError());
         }
     }
