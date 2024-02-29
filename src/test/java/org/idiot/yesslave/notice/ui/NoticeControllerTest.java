@@ -120,7 +120,7 @@ class NoticeControllerTest {
         void findNoticeFail() throws Exception {
             Mockito.doThrow(new NotFoundException()).when(noticeService).findNotice(failId);
             mockMvc.perform(
-                            MockMvcRequestBuilders.get(baseUrl + String.format("/%d", failId)))
+                            MockMvcRequestBuilders.get(baseUrl + "/%d", failId))
                     .andExpect(MockMvcResultMatchers.status().is4xxClientError());
         }
     }
@@ -184,10 +184,34 @@ class NoticeControllerTest {
                     .content(newContent)
                     .build();
             String requestString = asJsonString(request);
-            mockMvc.perform(MockMvcRequestBuilders.put(baseUrl + String.format("/%d", failId))
+            mockMvc.perform(MockMvcRequestBuilders.put(baseUrl + "/{id}", failId)
                             .content(requestString)
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+        }
+    }
+
+    @Nested
+    @DisplayName("공지를 삭제할 때")
+    class NoticeDelete {
+        @Test
+        @DisplayName("삭제에 성공합니다")
+        void deleteNoticeSuccess() throws Exception {
+            NoticeSaveRequest saveRequest = NoticeSaveRequest.builder()
+                    .title(title)
+                    .content(content)
+                    .build();
+            BDDMockito.given(noticeService.registerNotice(saveRequest)).willReturn(expectId);
+            BDDMockito.doNothing().when(noticeService).deleteNotice(expectId);
+            mockMvc.perform(MockMvcRequestBuilders.delete(baseUrl + "/{id}", expectId));
+        }
+
+        @Test
+        @DisplayName("삭제에 실패합니다")
+        void deleteNoticeFail() throws Exception {
+            Mockito.doThrow(NotFoundException.class).when(noticeService).deleteNotice(failId);
+            mockMvc.perform(MockMvcRequestBuilders.delete(baseUrl + "/{id}", failId))
                     .andExpect(MockMvcResultMatchers.status().is4xxClientError());
         }
 
