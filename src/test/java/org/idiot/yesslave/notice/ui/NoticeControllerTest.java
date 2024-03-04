@@ -19,7 +19,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -109,18 +108,17 @@ class NoticeControllerTest {
                     .content(content)
                     .build();
             BDDMockito.given(noticeService.registerNotice(request)).willReturn(expectId);
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(baseUrl + String.format("/%d", expectId)))
+            mockMvc.perform(MockMvcRequestBuilders.get(baseUrl + String.format("/%d", expectId)))
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andReturn();
-            System.out.println(mvcResult.getResponse().getContentAsString());
         }
 
         @Test
         @DisplayName("단일 조회에 실패합니다")
         void findNoticeFail() throws Exception {
-            Mockito.doThrow(new NotFoundException()).when(noticeService).findNotice(failId);
+            Mockito.doThrow(NotFoundException.class).when(noticeService).findNotice(failId);
             mockMvc.perform(
-                            MockMvcRequestBuilders.get(baseUrl + "/%d", failId))
+                            MockMvcRequestBuilders.get(baseUrl + "/{id}", failId))
                     .andExpect(MockMvcResultMatchers.status().is4xxClientError());
         }
     }
