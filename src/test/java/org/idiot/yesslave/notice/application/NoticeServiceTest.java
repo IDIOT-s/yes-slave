@@ -148,4 +148,32 @@ class NoticeServiceTest {
         }
     }
 
+    @Nested
+    @DisplayName("공지를 삭제할 때")
+    class NoticeDelete {
+        @Test
+        @DisplayName("삭제에 성공합니다")
+        void deleteNoticeSuccess() {
+            // given
+            Notice save = noticeRepository.save(Notice.createNotice(noticeSaveRequest));
+
+            // when
+            noticeService.deleteNotice(save.getId());
+
+            // then
+            Assertions.assertThatCode(() -> noticeRepository.findById(save.getId()))
+                    .isNull();
+        }
+
+        @Test
+        @DisplayName("id에 맞는 데이터가 없어 삭제에 실패합니다.")
+        void deleteNoticeFailById() {
+            // given
+            noticeRepository.save(Notice.createNotice(noticeSaveRequest));
+
+            // expected
+            Assertions.assertThatThrownBy(() -> noticeService.deleteNotice(failId))
+                    .isInstanceOf(NotFoundException.class);
+        }
+    }
 }
