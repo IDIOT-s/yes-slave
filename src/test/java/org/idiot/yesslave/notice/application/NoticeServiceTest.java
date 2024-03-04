@@ -12,11 +12,13 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 
 @SpringBootTest
+@Transactional
 class NoticeServiceTest {
     @Autowired
     NoticeService noticeService;
@@ -26,7 +28,12 @@ class NoticeServiceTest {
     final String content = "test content";
     final String newTitle = "new title";
     final String newContent = "new Content";
-    final Long failId = 2L;
+    final Long failId = 10000L;
+
+    final NoticeSaveRequest noticeSaveRequest = NoticeSaveRequest.builder()
+            .title(title)
+            .content(content)
+            .build();
 
     @Nested
     @DisplayName("공지 저장할 때")
@@ -34,12 +41,6 @@ class NoticeServiceTest {
         @Test
         @DisplayName("정상적으로 저장합니다.")
         void saveNotice() {
-            // given
-            NoticeSaveRequest noticeSaveRequest = NoticeSaveRequest.builder()
-                    .title(title)
-                    .content(content)
-                    .build();
-
             // when
             Long registerId = noticeService.registerNotice(noticeSaveRequest);
             Notice findNotice = noticeRepository.findById(registerId).get();
@@ -72,12 +73,8 @@ class NoticeServiceTest {
         @DisplayName("전체 조회에 성공합니다")
         void findAllNoticeSuccess() {
             // given
-            NoticeSaveRequest saveRequest = NoticeSaveRequest.builder()
-                    .title(title)
-                    .content(content)
-                    .build();
-            Notice saveNotice1 = noticeRepository.save(Notice.createNotice(saveRequest));
-            Notice saveNotice2 = noticeRepository.save(Notice.createNotice(saveRequest));
+            noticeRepository.save(Notice.createNotice(noticeSaveRequest));
+            noticeRepository.save(Notice.createNotice(noticeSaveRequest));
 
             // when
             List<NoticeFindResponse> allNotice = noticeService.findAllNotice();
@@ -90,11 +87,7 @@ class NoticeServiceTest {
         @DisplayName("조회에 성공합니다")
         void findNoticeSuccess() {
             //given
-            NoticeSaveRequest saveRequest = NoticeSaveRequest.builder()
-                    .title(title)
-                    .content(content)
-                    .build();
-            Notice saveNotice = noticeRepository.save(Notice.createNotice(saveRequest));
+            Notice saveNotice = noticeRepository.save(Notice.createNotice(noticeSaveRequest));
 
             //when
             NoticeFindResponse findNoticeResponse = noticeService.findNotice(saveNotice.getId());
@@ -110,16 +103,11 @@ class NoticeServiceTest {
         @DisplayName("id에 맞는 데이터가 없어 조회에 실패합니다")
         void findNoticeFailByNotFound() {
             // given
-            NoticeSaveRequest saveRequest = NoticeSaveRequest.builder()
-                    .title(title)
-                    .content(content)
-                    .build();
-            Notice saveNotice = noticeRepository.save(Notice.createNotice(saveRequest));
+            Notice saveNotice = noticeRepository.save(Notice.createNotice(noticeSaveRequest));
 
-            // when
+            // expected
             Assertions.assertThatThrownBy(() -> noticeService.findNotice(failId))
                     .isInstanceOf(NotFoundException.class);
         }
     }
-
 }
